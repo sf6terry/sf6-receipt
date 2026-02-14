@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>スト6 自己分析レシート 全キャラ対応版</title>
+    <link href="https://fonts.googleapis.com/css2?family=VT323&family=DotGothic16&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'DotGothic16', sans-serif; background-color: #222; color: #333; display: flex; flex-direction: column; align-items: center; padding: 20px; overflow-y: auto; }
+        h1 { color: #fff; margin-bottom: 5px; text-align: center; font-size: 24px; letter-spacing: 2px; }
+        p.desc { color: #aaa; font-size: 12px; margin-bottom: 20px; text-align: center; }
+        .container { display: flex; flex-wrap: wrap; gap: 30px; justify-content: center; max-width: 1200px; width: 100%; }
+        .input-area { background: #fff; padding: 20px; border-radius: 8px; width: 320px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); border-top: 5px solid #333; margin-bottom: 20px; }
+        .input-group { margin-bottom: 12px; }
+        label { display: block; font-size: 12px; margin-bottom: 4px; color: #555; font-weight: bold;}
+        input[type="text"], select, textarea { width: 100%; box-sizing: border-box; padding: 8px; background: #f4f4f4; border: 1px solid #ccc; border-radius: 4px; font-size: 14px; font-family: 'DotGothic16'; }
+        input[type="range"] { width: 100%; accent-color: #333; cursor: pointer; }
+        .range-val { float: right; font-weight: bold; }
+        button { width: 100%; padding: 15px; background: #333; color: #fff; border: none; font-weight: bold; cursor: pointer; margin-top: 15px; font-size: 16px; border-radius: 4px; font-family: 'DotGothic16'; }
+        canvas { width: 100%; max-width: 420px; height: auto; box-shadow: 0 20px 50px rgba(0,0,0,0.5); background: #fff; transform: rotate(-1.2deg); margin-bottom: 50px; }
+    </style>
+</head>
+<body>
+    <h1>#スト6自己分析レシート</h1>
+    <p class="desc">全キャラ対応（Year3 C.ヴァイパーまで）</p>
+    
+    <div class="container">
+        <div class="input-area">
+            <div class="input-group"><label>プレイヤー名</label><input type="text" id="pName" value="カレンダー" oninput="draw()"></div>
+            <div class="input-group" style="background:#f8f8f8; padding:8px; border-radius:5px;"><label>📷 画像変更 (自キャラ画像を優先)</label><input type="file" id="imageInput" accept="image/*"></div>
+            <div class="input-group">
+                <label>使用キャラクター</label>
+                <select id="pCharSelect" onchange="loadCharImage()">
+                    <optgroup label="Year 3 (予定含む)">
+                        <option value="sagat">サガット</option>
+                        <option value="viper">C.ヴァイパー</option>
+                    </optgroup>
+                    <optgroup label="Year 2">
+                        <option value="terry" selected>テリー</option>
+                        <option value="mai">不知火舞</option>
+                        <option value="bison">ベガ</option>
+                        <option value="elena">エレナ</option>
+                    </optgroup>
+                    <optgroup label="Year 1">
+                        <option value="akuma">豪鬼</option>
+                        <option value="ed">エド</option>
+                        <option value="aki">A.K.I.</option>
+                        <option value="rashid">ラシード</option>
+                    </optgroup>
+                    <optgroup label="初期キャラ">
+                        <option value="luke">ルーク</option>
+                        <option value="jamie">ジェイミー</option>
+                        <option value="manon">マノン</option>
+                        <option value="kimberly">キンバリー</option>
+                        <option value="marisa">マリーザ</option>
+                        <option value="lily">リリー</option>
+                        <option value="jp">JP</option>
+                        <option value="juri">ジュリ</option>
+                        <option value="deejay">ディージェイ</option>
+                        <option value="cammy">キャミィ</option>
+                        <option value="ryu">リュウ</option>
+                        <option value="ken">ケン</option>
+                        <option value="chunli">春麗</option>
+                        <option value="guile">ガイル</option>
+                        <option value="blanka">ブランカ</option>
+                        <option value="dhalsim">ダルシム</option>
+                        <option value="honda">E.本田</option>
+                        <option value="zangief">ザンギエフ</option>
+                    </optgroup>
+                </select>
+            </div>
+            <div class="input-group"><label>ランク・MR</label><input type="text" id="pRank" value="MASTER MR1700" oninput="draw()"></div>
+            <hr>
+            <div class="input-group"><label>インパクト反応(老い) <span class="range-val" id="val1">2</span></label><input type="range" id="stat1" min="1" max="5" value="2" oninput="updateVal(1)"></div>
+            <div class="input-group"><label>対空精度 <span class="range-val" id="val2">3</span></label><input type="range" id="stat2" min="1" max="5" value="3" oninput="updateVal(2)"></div>
+            <div class="input-group"><label>コンボ精度 <span class="range-val" id="val3">4</span></label><input type="range" id="stat3" min="1" max="5" value="4" oninput="updateVal(3)"></div>
+            <div class="input-group"><label>知識 (フレーム) <span class="range-val" id="val4">5</span></label><input type="range" id="stat4" min="1" max="5" value="5" oninput="updateVal(4)"></div>
+            <div class="input-group"><label>メンタル <span class="range-val" id="val5">3</span></label><input type="range" id="stat5" min="1" max="5" value="3" oninput="updateVal(5)"></div>
+            <hr>
+            <div class="input-group"><label>おじの独り言 (Memo)</label><textarea id="pComment" rows="4" oninput="draw()">反応は在庫切れ。
+でも読みの鋭さだけで生きてる。
+パッドMR1800復帰へ！</textarea></div>
+            <button onclick="downloadImage()">レシート発行 (保存)</button>
+        </div>
+        <div class="preview-area"><canvas id="cardCanvas" width="420"></canvas></div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('cardCanvas');
+        const ctx = canvas.getContext('2d');
+        let currentCharImage = new Image();
+        let uploadedImage = null;
+        const proxy = "https://images.weserv.nl/?url=";
+        
+        // 全キャラ対応画像リスト
+        const charImageUrls = {
+            // Year 2 & 3
+            'terry': 'worldterrysf6log.wordpress.com/wp-content/uploads/2026/02/img_1947.jpg',
+            'mai': 'worldterrysf6log.wordpress.com/wp-content/uploads/2026/02/img_1952-3.jpg',
+            'bison': 'worldterrysf6log.wordpress.com/wp-content/uploads/2026/02/img_1954-17.jpg',
+            'elena': 'worldterrysf6log.wordpress.com/wp-content/uploads/2026/02/img_1980.jpg',
+            'sagat': 'worldterrysf6log.wordpress.com/wp-content/uploads/2026/02/img_1954-14.jpg',
+            'viper': 'worldterrysf6log.wordpress.com/wp-content/uploads/2026/02/img_1954-15.jpg',
+            // Year 1
+            'rashid': 'worldterrysf6log.wordpress.com/wp-content/uploads/2026/02/img_1954-12.jpg',
+            'aki': 'worldterrysf6log.wordpress.com/wp-content/uploads/2026/02/img_1954-13.jpg',
+            'ed': 'worldterrysf6log.wordpress.com/wp-content/uploads/2026/02/img_1952.jpg',
+            'akuma': 'worldterrysf6log.wordpress.com/wp-content/uploads/2026/02/img_1954-16.jpg',
+            // Initial
+            'luke': 'worldterrysf6log.wordpress.com/wp-content/uploads/2026/02/img_1954-6.jpg',
+            'jamie': 'worldterrysf6log.wordpress.com/wp-content/uploads/2026/02/img_1954-9.jpg',
+            'manon': 'worldterrysf6log.wordpress.com/wp-content/uploads/2026/02/img_1954-10.jpg',
+            'kimberly': 'worldterrysf6log.wordpress.com/wp-content/uploads/2026/02/img_1954-8.jpg',
+            'marisa': 'worldterrysf6log.wordpress.com/wp-content/uploads/2026/02/img_1954-7.jpg',
+            'lily': 'worldterrysf6log.wordpress.com/wp-content/uploads/2026/02/img_1952-2.jpg',
+            'jp': 'worldterrysf6log.wordpress.com/wp-content/uploads/2026/02/img_1954-11.jpg',
+            'juri': 'worldterrysf6log.wordpress.com/wp-content/uploads/2026/02/img_1954-5.jpg',
+            'deejay': 'worldterrysf6log.wordpress.com/wp-content/uploads/2026/02/img_1952-1.jpg',
+            'cammy': 'worldterrysf6log.wordpress.com/wp-content/uploads/2026/02/img_1954-4-1.jpg',
+            'ryu': 'worldterrysf6log.wordpress.com/wp-content/uploads/2026/02/img_1954-1.jpg',
+            'honda': 'worldterrysf6log.wordpress.com/wp-content/uploads/2026/02/img_1954-4.jpg',
+            'blanka': 'worldterrysf6log.wordpress.com/wp-content/uploads/2026/02/img_1954-1-2.jpg',
+            'guile': 'worldterrysf6log.wordpress.com/wp-content/uploads/2026/02/img_1954-2.jpg',
+            'ken': 'worldterrysf6log.wordpress.com/wp-content/uploads/2026/02/img_1954-3.jpg',
+            'chunli': 'worldterrysf6log.wordpress.com/wp-content/uploads/2026/02/img_1954-1-1.jpg',
+            'zangief': 'worldterrysf6log.wordpress.com/wp-content/uploads/2026/02/img_1954-2-1.jpg',
+            'dhalsim': 'worldterrysf6log.wordpress.com/wp-content/uploads/2026/02/img_1954-3-1.jpg'
+        };
+
+        function updateVal(id) { document.getElementById('val'+id).innerText = document.getElementById('stat'+id).value; draw(); }
+
+        document.getElementById('imageInput').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(ev) {
+                    uploadedImage = new Image();
+                    uploadedImage.onload = function() { draw(); };
+                    uploadedImage.src = ev.target.result;
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+
+        function loadCharImage() {
+            if (!uploadedImage) {
+                const charKey = document.getElementById('pCharSelect').value;
+                const url = proxy + (charImageUrls[charKey] || charImageUrls['ryu']);
+                currentCharImage = new Image();
+                currentCharImage.crossOrigin = "anonymous";
+                currentCharImage.onload = function() { draw(); };
+                currentCharImage.src = url;
+                setTimeout(draw, 500);
+            }
+        }
+
+        function draw() {
+            const receiptHeight = 750;
+            canvas.height = receiptHeight; 
+
+            // 背景とノイズ
+            ctx.fillStyle = '#fcfcfc'; ctx.fillRect(0, 0, 420, receiptHeight);
+            ctx.fillStyle = "rgba(0,0,0,0.02)";
+            for(let i=0; i<420; i+=4) for(let j=0; j<receiptHeight; j+=4) if(Math.random()>0.5) ctx.fillRect(i,j,2,2);
+
+            let y = 35;
+            ctx.fillStyle = "#333"; ctx.font = "bold 26px 'VT323'"; ctx.textAlign = "center";
+            ctx.fillText("SF6 BATTLE LOG", 210, y);
+            y += 22;
+            ctx.font = "11px 'DotGothic16'"; ctx.fillText(new Date().toLocaleString(), 210, y);
+            y += 12; ctx.fillText("------------------------------------------", 210, y);
+
+            y += 25; ctx.textAlign = "left"; ctx.font = "bold 14px 'DotGothic16'";
+            ctx.fillText("PLAYER: " + document.getElementById('pName').value, 45, y);
+            y += 20; ctx.fillText("RANK  : " + document.getElementById('pRank').value, 45, y);
+
+            y += 10;
+            let img = uploadedImage || currentCharImage;
+            const imgSize = 170; 
+            if (img.complete && img.naturalWidth !== 0) {
+                ctx.save(); ctx.filter = 'grayscale(100%) contrast(150%) brightness(110%)';
+                ctx.drawImage(img, (420 - imgSize) / 2, y, imgSize, imgSize); ctx.restore();
+            }
+            y += imgSize + 10;
+            ctx.textAlign = "center"; ctx.fillText("------------------------------------------", 210, y);
+
+            y += 95; 
+            const centerX = 210, centerY = y, radius = 65, angleStep = (Math.PI * 2) / 5;
+            const stats = [1,2,3,4,5].map(i => parseInt(document.getElementById('stat'+i).value));
+            const labels = ["インパクト", "対空", "コンボ", "知識", "メンタル"];
+
+            ctx.strokeStyle = "#ccc"; ctx.lineWidth = 1;
+            for (let j = 1; j <= 5; j++) {
+                ctx.beginPath();
+                for (let i = 0; i < 5; i++) {
+                    const r = (radius / 5) * j;
+                    ctx.lineTo(centerX + r * Math.sin(i * angleStep), centerY - r * Math.cos(i * angleStep));
+                }
+                ctx.closePath(); ctx.stroke();
+            }
+            ctx.beginPath(); ctx.fillStyle = "rgba(0,0,0,0.12)"; ctx.strokeStyle = "#333"; ctx.lineWidth = 2.5;
+            stats.forEach((val, i) => {
+                const r = (radius / 5) * val;
+                ctx.lineTo(centerX + r * Math.sin(i * angleStep), centerY - r * Math.cos(i * angleStep));
+            });
+            ctx.closePath(); ctx.fill(); ctx.stroke();
+            ctx.fillStyle = "#333"; ctx.font = "bold 11px 'DotGothic16'";
+            labels.forEach((l, i) => {
+                const r = radius + 18;
+                ctx.fillText(l, centerX + r * Math.sin(i * angleStep), centerY - r * Math.cos(i * angleStep) + 4);
+            });
+
+            // 5. おじ度 (配置調整済み)
+            y += radius + 55; 
+            const totalScore = stats.reduce((s, v) => s + v, 0);
+            // 逆転ロジック：低いほど高%
+            const ojiPercent = Math.min(100, Math.max(0, Math.floor(((25 - totalScore) / 20) * 100)));
+            
+            ctx.textAlign = "left"; ctx.font = "bold 18px 'DotGothic16'"; ctx.fillText("おじ度", 130, y);
+            ctx.textAlign = "right"; ctx.font = "bold 22px 'VT323'"; ctx.fillText(ojiPercent + " %", 290, y);
+            
+            y += 28;
+            let rankStr = totalScore <= 8 ? "【完熟おじ（絶滅危惧種）】" : totalScore <= 14 ? "【仕上がったおじ（現役）】" : totalScore <= 20 ? "【おじ予備軍（中堅）】" : "【ヤング（格ゲー星人）】";
+            ctx.textAlign = "center"; ctx.font = "bold 16px 'DotGothic16'"; ctx.fillText(rankStr, 210, y);
+
+            // 6. 独り言 (垂直センター配置)
+            const commentLines = document.getElementById('pComment').value.split('\n');
+            const footerStart = receiptHeight - 70;
+            const gapStart = y + 5; 
+            const lineHeight = 22;
+            const totalTextHeight = commentLines.length * lineHeight;
+            
+            y = gapStart + (footerStart - gapStart - totalTextHeight) / 2 + 10;
+
+            ctx.textAlign = "left"; ctx.font = "bold 15px 'DotGothic16'";
+            commentLines.forEach(line => { 
+                ctx.fillText(line, 45, y); 
+                y += lineHeight; 
+            });
+
+            // 7. フッター
+            y = receiptHeight - 70;
+            ctx.fillStyle = "#333";
+            for(let i=45; i<375; i+= Math.random()*5+2) ctx.fillRect(i, y, Math.random()*3+1, 30);
+            ctx.textAlign = "center"; ctx.font = "11px 'VT323'"; ctx.fillText("THANK YOU FOR PLAYING!", 210, y + 40);
+            for(let i=0; i<420; i+=10) { 
+                ctx.beginPath(); ctx.moveTo(i, receiptHeight); 
+                ctx.lineTo(i+5, receiptHeight-8); ctx.lineTo(i+10, receiptHeight); ctx.fill(); 
+            }
+        }
+
+        function downloadImage() {
+            canvas.toBlob((blob) => {
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url; a.download = 'sf6_receipt_full.png';
+                a.click();
+                setTimeout(() => window.open(url, '_blank'), 500);
+            });
+        }
+        window.onload = loadCharImage;
+        document.fonts.ready.then(draw);
+    </script>
+</body>
+</html>

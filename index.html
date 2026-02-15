@@ -218,17 +218,21 @@
                 ctx.fillText(l, centerX + r * Math.sin(i * angleStep), centerY - r * Math.cos(i * angleStep) + 4);
             });
 
-            // 5. おじ度 (配置調整済み)
+                        // 5. おじ度 (新ロジック：身体能力が低いほど、知識が高いほどおじ)
             y += radius + 55; 
-            const totalScore = stats.reduce((s, v) => s + v, 0);
-            // 逆転ロジック：低いほど高%
-            const ojiPercent = Math.min(100, Math.max(0, Math.floor(((25 - totalScore) / 20) * 100)));
+            
+            // 知識(stats[3])が高いほど加点、それ以外は低いほど加点
+            const ojiPoints = (5 - stats[0]) + (5 - stats[1]) + (5 - stats[2]) + (stats[3] - 1) + (5 - stats[4]);
+            const ojiPercent = Math.min(100, Math.max(0, Math.floor((ojiPoints / 20) * 100)));
             
             ctx.textAlign = "left"; ctx.font = "bold 18px 'DotGothic16'"; ctx.fillText("おじ度", 130, y);
             ctx.textAlign = "right"; ctx.font = "bold 22px 'VT323'"; ctx.fillText(ojiPercent + " %", 290, y);
             
             y += 28;
-            let rankStr = totalScore <= 8 ? "【完熟おじ（絶滅危惧種）】" : totalScore <= 14 ? "【仕上がったおじ（現役）】" : totalScore <= 20 ? "【おじ予備軍（中堅）】" : "【ヤング（格ゲー星人）】";
+            // パーセンテージでランク判定
+            let rankStr = ojiPercent >= 85 ? "【完熟おじ（絶滅危惧種）】" : 
+                          ojiPercent >= 55 ? "【仕上がったおじ（現役）】" : 
+                          ojiPercent >= 20 ? "【おじ予備軍（中堅）】" : "【ヤング（格ゲー星人）】";
             ctx.textAlign = "center"; ctx.font = "bold 16px 'DotGothic16'"; ctx.fillText(rankStr, 210, y);
 
             // 6. 独り言 (垂直センター配置)
